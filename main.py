@@ -4,6 +4,9 @@ from snake import Snake
 from food import Food
 from scoreboard import ScoreBoard
 
+with open("data.txt",mode="r+") as file:
+    score = file.read()
+print(score)
 screen = Screen()
 screen.setup(width=600,height=600)
 screen.bgcolor("black")
@@ -13,7 +16,7 @@ screen.tracer(0)
 
 snake = Snake()
 food = Food()
-scoreboard = ScoreBoard()
+scoreboard = ScoreBoard(score)
 game_is_on = True
 
 screen.listen()
@@ -34,13 +37,11 @@ while game_is_on:
     # detect collision with wall
 
     if snake.head.xcor() > 288 or snake.head.xcor() < -288 or snake.head.ycor() > 288 or snake.head.ycor() < -288:
-        game_is_on = False
-        scoreboard.game_over()
-    
+        scoreboard.reset_scoreboard()
+        snake.reset()
     for segment in snake.segments[1:]:
         if snake.head.distance(segment) < 10:
-          game_is_on = False
-          scoreboard.game_over()
+          scoreboard.reset_scoreboard()
 
 
 
